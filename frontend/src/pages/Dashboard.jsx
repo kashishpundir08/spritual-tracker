@@ -29,7 +29,6 @@ const Dashboard = () => {
   return (
       <div className="space-y-6 pb-10 w-full text-slate-800">
         
-        {/* --- 1. HEADER SECTION --- */}
         <section className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <motion.h1 
@@ -42,7 +41,6 @@ const Dashboard = () => {
             <p className="text-slate-500">Your spiritual momentum is high today.</p>
           </div>
           
-          {/* SPIRITUAL SCORE GAUGE */}
           <div className="bg-white px-6 py-3 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
             <div className="relative w-12 h-12 flex items-center justify-center">
               <svg className="w-full h-full transform -rotate-90">
