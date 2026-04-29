@@ -103,8 +103,8 @@ const Chanting = () => {
         <StatBox icon={<Hash size={18} className="text-teal-600 dark:text-orange-500" />} label="Malas" value={malaCount} />
       </div>
 
-      {/* 2. Selection Bar - Reduced Margin */}
-      <div className="w-full flex flex-col mb-11 md:flex-row items-center justify-between gap-3 p-3 bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800 mb-4 shadow-sm">
+      {/* 2. Selection Bar  */}
+      <div className="w-full flex flex-col mb-11  md:flex-row items-center justify-between gap-3 p-3 bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800 mb-4 shadow-sm">
         <div className="flex items-center gap-3 w-full md:w-auto">
           <button 
             onClick={() => setLanguage(language === 'English' ? 'Hindi' : 'English')}
@@ -141,7 +141,7 @@ const Chanting = () => {
       )}
 
       {/* 3. Interaction Area - Reduced mt */}
-      <div className="relative flex flex-col items-center justify-center w-full mt-14 md:mt-14 mb-6">
+      <div className="relative flex flex-col items-center justify-center w-full mt-20 md:mt-14 mb-6">
         
         {/* DYNAMIC TWO-LINE ARC */}
         <div className="absolute -top-30 md:-top-24 w-full max-w-[500px] pointer-events-none">
