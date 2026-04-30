@@ -15,48 +15,51 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
   return (
     <motion.div
       initial={false}
-      animate={{ x: isOpen ? 0 : -300 }}
-      transition={{ type: "spring", damping: 25, stiffness: 200 }}
-      className="fixed left-0 top-0 h-screen w-64 bg-white dark:bg-slate-900 shadow-2xl z-50 flex flex-col border-r border-slate-100 dark:border-slate-800"
+      animate={{ x: isOpen ? 0 : -256 }}
+      transition={{ type: "spring", damping: 20, stiffness: 150 }}
+      className="fixed left-0 top-0 h-screen w-64 bg-white dark:bg-slate-950 shadow-2xl z-50 flex flex-col border-r border-slate-100 dark:border-slate-800"
     >
       <div className="p-6">
         <div className="flex items-center justify-between mb-10">
           <div className="flex items-center gap-2">
-            <div className="w-9 h-9 bg-teal-600 dark:bg-orange-600 rounded-xl flex items-center justify-center shadow-lg">
-              <Flame className="text-white" size={20} />
+            <div className="w-8 h-8 bg-teal-600 dark:bg-orange-600 rounded-lg flex items-center justify-center">
+              <Flame className="text-white" size={18} />
             </div>
-            <h2 className="text-xl font-bold text-slate-800 dark:text-white tracking-tight">SoulTrack</h2>
+            <h2 className="text-lg font-bold text-slate-800 dark:text-white">SoulTrack</h2>
           </div>
-          <button onClick={() => setIsOpen(false)} className="md:hidden p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full text-slate-400">
-            <X size={20} />
+          <button 
+            onClick={() => setIsOpen(false)} 
+            className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-400 transition-colors"
+          >
+            <X size={18} />
           </button>
         </div>
 
-        <nav className="space-y-1.5">
-          <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] mb-4 px-3">Main Menu</p>
+        <nav className="space-y-1">
+          <p className="text-[10px] font-bold text-slate-400 dark:text-slate-600 uppercase tracking-widest mb-4 px-3">Main Menu</p>
           {menuItems.map((item, index) => (
             <NavLink
               key={index}
               to={item.path}
-              onClick={() => window.innerWidth < 768 && setIsOpen(false)} // Auto-close on mobile
+              onClick={() => window.innerWidth < 768 && setIsOpen(false)}
               className={({ isActive }) => `
-                flex items-center gap-3 p-3 rounded-xl transition-all group
+                flex items-center gap-3 p-3 rounded-xl transition-all
                 ${isActive 
                   ? 'bg-teal-50 dark:bg-orange-500/10 text-teal-600 dark:text-orange-500' 
-                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'}
+                  : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'}
               `}
             >
-              <span className="transition-colors">{item.icon}</span>
+              <span>{item.icon}</span>
               <span className="font-semibold text-sm">{item.name}</span>
             </NavLink>
           ))}
         </nav>
       </div>
 
-      <div className="mt-auto p-6 border-t border-slate-50 dark:border-slate-800">
-        <button className="w-full flex items-center gap-3 p-3 rounded-xl text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-all">
-          <LogOut size={20} />
-          <span className="font-bold text-sm">Logout</span>
+      <div className="mt-auto p-6 border-t border-slate-50 dark:border-slate-900">
+        <button className="w-full flex items-center gap-3 p-3 rounded-xl text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-all font-bold text-sm">
+          <LogOut size={18} />
+          <span>Logout</span>
         </button>
       </div>
     </motion.div>

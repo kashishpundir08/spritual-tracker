@@ -3,10 +3,10 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import Chanting from './pages/Chanting';
+import Reading from './pages/Reading';
+import Journaling from './pages/Journaling';
 
-// Placeholder components for the other pages
-const Reading = () => <div className="p-10 text-2xl font-bold">📖 Reading Page (Coming Soon)</div>;
-const Journaling = () => <div className="p-10 text-2xl font-bold">✍️ Journaling Page (Coming Soon)</div>;
+
 const QA = () => <div className="p-10 text-2xl font-bold">❓ Q&A / Guidance (Coming Soon)</div>;
 
 function App() {
