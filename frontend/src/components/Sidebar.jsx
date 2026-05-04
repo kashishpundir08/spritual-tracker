@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { NavLink } from 'react-router-dom';
 import { X, Flame, LayoutDashboard, Disc, BookOpen, PenLine, MessageCircleQuestion, LogOut } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import Login from '../pages/Login';
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
   const menuItems = [
@@ -11,6 +13,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     { name: "Journaling", icon: <PenLine size={20} />, path: "/journaling" },
     { name: "Q&A / Guidance", icon: <MessageCircleQuestion size={20} />, path: "/qa" },
   ];
+  const navigate = useNavigate();
 
   return (
     <motion.div
@@ -59,7 +62,11 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       <div className="mt-auto p-6 border-t border-slate-50 dark:border-slate-900">
         <button className="w-full flex items-center gap-3 p-3 rounded-xl text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-all font-bold text-sm">
           <LogOut size={18} />
-          <span>Logout</span>
+          <span
+            onClick={() => {
+              navigate('/login');
+            }}
+          >Logout</span>
         </button>
       </div>
     </motion.div>

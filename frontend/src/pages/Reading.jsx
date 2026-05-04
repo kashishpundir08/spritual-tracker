@@ -23,12 +23,6 @@ const Reading = () => {
       image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP64rsH3PYxW9VvDQ44grCllQKIqyzQnLeSg&s", 
       link: "https://sufinama.org/sant-vani?wref=rweb" 
     },
-    { 
-      id: 4, 
-      title: "Sant Vani", 
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP64rsH3PYxW9VvDQ44grCllQKIqyzQnLeSg&s", 
-      link: "https://sufinama.org/sant-vani?wref=rweb" 
-    }
   ]);
 
   // 2. States for Logging and Library

@@ -31,7 +31,6 @@ const Chanting = () => {
     return () => clearInterval(interval);
   }, [isChanting]);
 
-  // Generate a random path for the bubble to wander
   const createBubble = useCallback(() => {
     const bubbleConfigs = [
       { color: 'border-teal-500 text-teal-600', glow: 'rgba(20, 184, 166, 0.15)' },
@@ -45,13 +44,13 @@ const Chanting = () => {
     
     // Create a path of 5 random points to float through
     const generatePoints = () => Array.from({ length: 5 }, () => Math.floor(Math.random() * 60) + 10);
-
+ 
     const bubble = {
       id: Date.now(),
       pathX: generatePoints(),
       pathY: generatePoints(),
       ...config,
-      duration: 15, // Slow, meditative movement
+      duration: 15, // Slow, meditative movement  
     };
     setActiveBubble(bubble);
   }, []);
@@ -138,12 +137,12 @@ const Chanting = () => {
               key={activeBubble.id}
               initial={{ 
                 left: `${activeBubble.pathX[0]}%`, 
-                top: `${activeBubble.pathY[0]}%`, 
+                top: `${activeBubble.pathY[0]}%`,  
                 scale: 0, 
                 opacity: 0 
               }}
               animate={{ 
-                left: activeBubble.pathX.map(p => `${p}%`),
+                left: activeBubble.pathX.map(p => `${p}%`),     
                 top: activeBubble.pathY.map(p => `${p}%`),
                 scale: 1, 
                 opacity: 1 
@@ -207,4 +206,4 @@ const StatBox = ({ icon, label, value }) => (
   </div>
 );
 
-export default Chanting;
+export default Chanting; 
