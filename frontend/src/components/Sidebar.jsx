@@ -15,16 +15,21 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
   ];
   const navigate = useNavigate();
 
+  const handleLogout = () =>{
+    localStorage.clear();
+    navigate('/login');
+  }
+
   return (
     <motion.div
-      initial={false}
+      initial={false}     
       animate={{ x: isOpen ? 0 : -256 }}
       transition={{ type: "spring", damping: 20, stiffness: 150 }}
       className="fixed left-0 top-0 h-screen w-64 bg-white dark:bg-slate-950 shadow-2xl z-50 flex flex-col border-r border-slate-100 dark:border-slate-800"
     >
       <div className="p-6">
         <div className="flex items-center justify-between mb-10">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2">  
             <div className="w-8 h-8 bg-teal-600 dark:bg-orange-600 rounded-lg flex items-center justify-center">
               <Flame className="text-white" size={18} />
             </div>
@@ -63,9 +68,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         <button className="w-full flex items-center gap-3 p-3 rounded-xl text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-all font-bold text-sm">
           <LogOut size={18} />
           <span
-            onClick={() => {
-              navigate('/login');
-            }}
+            onClick={handleLogout}
           >Logout</span>
         </button>
       </div>

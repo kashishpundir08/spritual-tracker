@@ -2,16 +2,29 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Flame, ArrowRight } from 'lucide-react';
+import { loginApi } from '../api/authApi';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add auth logic here
-    navigate('/');
+    setError('');
+    setLoading(true);
+    try {
+      const data = await loginApi(email, password);
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('name', data.name);
+      navigate('/');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Invalid email or password!');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -21,7 +34,6 @@ const Login = () => {
         animate={{ opacity: 1, y: 0 }}
         className="max-w-md w-full"
       >
-        {/* Logo Section */}
         <div className="flex flex-col items-center mb-8">
           <div className="w-12 h-12 bg-teal-600 dark:bg-orange-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-teal-500/20 dark:shadow-orange-500/20">
             <Flame className="text-white" size={28} />
@@ -30,8 +42,15 @@ const Login = () => {
           <p className="text-slate-500 dark:text-slate-400 mt-2 text-center">Continue your spiritual journey today</p>
         </div>
 
-        {/* Form Card */}
         <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800">
+          
+          {/* Error Message */}
+          {error && (
+            <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-red-600 dark:text-red-400 text-sm text-center">
+              {error}
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Email Address</label>
@@ -68,10 +87,11 @@ const Login = () => {
 
             <button 
               type="submit"
-              className="w-full bg-teal-600 dark:bg-orange-600 hover:bg-teal-700 dark:hover:bg-orange-700 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2 group shadow-lg shadow-teal-500/20 dark:shadow-orange-500/20"
+              disabled={loading}
+              className="w-full bg-teal-600 dark:bg-orange-600 hover:bg-teal-700 dark:hover:bg-orange-700 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2 group shadow-lg shadow-teal-500/20 dark:shadow-orange-500/20 disabled:opacity-60"
             >
-              Sign In
-              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              {loading ? 'Signing in...' : 'Sign In'}
+              {!loading && <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />}
             </button>
           </form>
 

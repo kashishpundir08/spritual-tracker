@@ -18,7 +18,7 @@ const Chanting = () => {
       'Hare Krishna Hare Krishna Krsna Krsna Hare Hare Hare Rama Hare Rama Rama Rama Hare Hare',
       'Shambh Sada Shiv',
       'Om Namo Bhagavate Vasudevaya',
-      'Om Gam Ganapataye Namaha'
+      'Om Gam Ganapataye Namaha' 
     ],
     Hindi: ['ॐ नमः शिवाय', 'हरे कृष्ण हरे कृष्ण कृष्ण कृष्ण हरे हरे', 'ॐ नमो भगवते वासुदेवाय']
   };
@@ -42,7 +42,7 @@ const Chanting = () => {
 
     const config = bubbleConfigs[Math.floor(Math.random() * bubbleConfigs.length)];
     
-    // Create a path of 5 random points to float through
+    // Create a path of 5 random points to float through  
     const generatePoints = () => Array.from({ length: 5 }, () => Math.floor(Math.random() * 60) + 10);
  
     const bubble = {
@@ -50,7 +50,7 @@ const Chanting = () => {
       pathX: generatePoints(),
       pathY: generatePoints(),
       ...config,
-      duration: 15, // Slow, meditative movement  
+      duration: 15, 
     };
     setActiveBubble(bubble);
   }, []);
@@ -73,6 +73,7 @@ const Chanting = () => {
       setShowPopup(true);
       setIsChanting(false);
       setTimeout(() => setShowPopup(false), 3000);
+
     } else {
       setCount(nextCount);
       setTimeout(createBubble, 100);
@@ -94,7 +95,7 @@ const Chanting = () => {
         <StatBox icon={<Timer size={18} className="text-blue-500" />} label="Time" value={formatTime(timer)} />
         <StatBox icon={<Hash size={18} className="text-teal-600 dark:text-orange-500" />} label="Malas" value={malaCount} />
       </div>
-
+      
       {/* 2. Control Bar */}
       <div className="w-full flex flex-col md:flex-row items-center justify-between gap-3 p-3 bg-white/80 dark:bg-slate-900/60 backdrop-blur-md rounded-2xl border border-slate-200 dark:border-slate-800 mb-4 shadow-sm z-20">
         <div className="flex items-center gap-3 w-full md:w-auto">
@@ -105,7 +106,7 @@ const Chanting = () => {
             <select value={selectedMantra} onChange={(e) => { setSelectedMantra(e.target.value); setActiveBubble(null); }} className="w-full bg-transparent border-none outline-none text-xs font-bold dark:text-slate-200 cursor-pointer">
               {mantras[language].map(m => <option key={m} value={m} className="dark:bg-slate-950">{m}</option>)}
             </select>
-          </div>
+          </div> 
         </div>
         <div className="flex items-center gap-4">
           <button onClick={() => setShowCustomInput(!showCustomInput)} className="text-xs font-black text-teal-600 dark:text-orange-500 flex items-center gap-1">
@@ -116,12 +117,12 @@ const Chanting = () => {
           </button>
         </div>
       </div>
-
+  
       {showCustomInput && (
         <input autoFocus className="w-full mb-4 p-2 bg-transparent border-b border-teal-500/20 dark:border-orange-500/40 outline-none text-center text-sm font-medium z-20 dark:text-white" placeholder="Enter custom mantra..." onChange={(e) => setSelectedMantra(e.target.value)} />
       )}
 
-      {/* 3. Meditation Space */}
+      {/* 3. Meditation Space */}         
       <div className="flex-1 w-full relative overflow-hidden bg-slate-50/20 dark:bg-slate-950/40 rounded-[2.5rem] border border-slate-200 dark:border-slate-800/50 mb-4 shadow-inner">
         
         {/* Background Large Counter */}
@@ -134,7 +135,7 @@ const Chanting = () => {
         <AnimatePresence>
           {isChanting && activeBubble && (
             <motion.div
-              key={activeBubble.id}
+              key={activeBubble.id} 
               initial={{ 
                 left: `${activeBubble.pathX[0]}%`, 
                 top: `${activeBubble.pathY[0]}%`,  

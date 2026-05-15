@@ -2,14 +2,31 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, User, Flame, ArrowRight } from 'lucide-react';
+import { registerApi } from '../api/authApi';
 
 const Register = () => {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate('/');
+    setError('');
+    setLoading(true);
+    try {
+      const data = await registerApi(formData.name, formData.email, formData.password);
+      localStorage.setItem('token', data.token);
+      navigate('/');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Registration failed!');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -28,27 +45,41 @@ const Register = () => {
         </div>
 
         <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800">
+
+          {/* Error Message */}
+          {error && (
+            <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-red-600 dark:text-red-400 text-sm text-center">
+              {error}
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Full Name</label>
               <div className="relative">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                 <input 
-                  type="text" 
+                  type="text"
+                  name="name"
                   required
+                  value={formData.name}
+                  onChange={handleChange}
                   placeholder="Kashish Pundir"
                   className="w-full bg-slate-50 dark:bg-slate-800 border border-transparent focus:border-teal-500 dark:focus:border-orange-500 rounded-xl py-3 pl-10 pr-4 outline-none transition-all dark:text-white"
                 />
               </div>
             </div>
- 
+
             <div>
               <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Email Address</label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                 <input 
-                  type="email" 
+                  type="email"
+                  name="email"
                   required
+                  value={formData.email}
+                  onChange={handleChange}
                   placeholder="kashish@example.com"
                   className="w-full bg-slate-50 dark:bg-slate-800 border border-transparent focus:border-teal-500 dark:focus:border-orange-500 rounded-xl py-3 pl-10 pr-4 outline-none transition-all dark:text-white"
                 />
@@ -60,8 +91,11 @@ const Register = () => {
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                 <input 
-                  type="password" 
+                  type="password"
+                  name="password"
                   required
+                  value={formData.password}
+                  onChange={handleChange}
                   placeholder="••••••••"
                   className="w-full bg-slate-50 dark:bg-slate-800 border border-transparent focus:border-teal-500 dark:focus:border-orange-500 rounded-xl py-3 pl-10 pr-4 outline-none transition-all dark:text-white"
                 />
@@ -70,10 +104,11 @@ const Register = () => {
 
             <button 
               type="submit"
-              className="w-full bg-teal-600 dark:bg-orange-600 hover:bg-teal-700 dark:hover:bg-orange-700 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2 group shadow-lg shadow-teal-500/20 dark:shadow-orange-500/20"
+              disabled={loading}
+              className="w-full bg-teal-600 dark:bg-orange-600 hover:bg-teal-700 dark:hover:bg-orange-700 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2 group shadow-lg shadow-teal-500/20 dark:shadow-orange-500/20 disabled:opacity-60"
             >
-              Create Account
-              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              {loading ? 'Creating Account...' : 'Create Account'}
+              {!loading && <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />}
             </button>
           </form>
 
