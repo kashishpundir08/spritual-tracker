@@ -25,7 +25,8 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of(
                 "http://localhost:5173",
-                "https://vercel.com/kashish-pundirs-projects/spritual-tracker"
+                "https://spritual-tracker-five.vercel.app",
+                "https://spritual-tracker-7x57llw1t-kashish-pundirs-projects.vercel.app"
         ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
