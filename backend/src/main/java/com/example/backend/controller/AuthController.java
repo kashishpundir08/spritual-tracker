@@ -27,4 +27,9 @@ public class AuthController {
                 request.get("password")
         ));
     }
+
+    @GetMapping("/health")
+    public ResponseEntity<?> health() {
+        return ResponseEntity.ok(Map.of("status", "UP"));
+    }
 }

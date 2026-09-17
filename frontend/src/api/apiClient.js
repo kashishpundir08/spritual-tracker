@@ -15,4 +15,12 @@ apiClient.interceptors.request.use((config) => {
   return config;
 });
 
+// Wake up Render server on app start
+export const wakeUpServer = async () => {
+  try {
+    await apiClient.get('/auth/login');
+  } catch (e) {
+  }
+};
+
 export default apiClient;

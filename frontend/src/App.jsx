@@ -7,17 +7,39 @@ import Reading from './pages/Reading';
 import Journaling from './pages/Journaling';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import { wakeUpServer } from './api/apiClient';
 
 const QA = () => <div className="p-10 text-2xl font-bold">❓ Q&A / Guidance (Coming Soon)</div>;
 
-// Protects routes — redirects to /login if no token
-const PrivateRoute = ({ children }) => {
+const isTokenValid = () => {
   const token = localStorage.getItem('token');
-  return token ? children : <Navigate to="/login" />;
+  if (!token) return false;
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const expiry = payload.exp * 1000;
+    return Date.now() < expiry;
+  } catch (e) {
+    return false;
+  }
+};
+
+const PrivateRoute = ({ children }) => {
+  const valid = isTokenValid();
+  if (!valid) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('name');
+    return <Navigate to="/login" />;
+  }
+  return children;
 };
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    // Wake up Render server when app loads
+    wakeUpServer();
+  }, []);
 
   useEffect(() => {
     if (darkMode) {
@@ -32,11 +54,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Public Routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-
-        {/* Protected Routes */}
         <Route path="/*" element={
           <PrivateRoute>
             <Layout darkMode={darkMode} toggleDarkMode={toggleDarkMode}>
