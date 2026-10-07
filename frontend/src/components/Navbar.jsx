@@ -14,7 +14,15 @@ const Navbar = ({ onMenuClick, darkMode, toggleDarkMode, isOpen }) => {
     { name: "Reading", path: "/reading" },
     { name: "Journaling", path: "/journaling" },
     { name: "Q&A / Guidance", path: "/qa" },
+    { name: "Profile", path: "/profile" },
   ];
+  const initials = (localStorage.getItem('name') || '')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0].toUpperCase())
+    .join('');
 
   const filteredPages = pages.filter(page =>
     page.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -103,9 +111,14 @@ const Navbar = ({ onMenuClick, darkMode, toggleDarkMode, isOpen }) => {
           </button>
           
           <div className="flex items-center gap-3 pl-4 border-l border-slate-100 dark:border-slate-800">
-            <div className="w-9 h-9 bg-gradient-to-tr from-teal-500 to-emerald-400 dark:from-orange-600 dark:to-orange-400 rounded-lg flex items-center justify-center text-white text-xs font-bold shadow-sm">
-              KP
-            </div>
+            <button
+              type="button"
+              onClick={() => navigate('/profile')}
+              aria-label="Open profile"
+              className="w-9 h-9 bg-gradient-to-tr from-teal-500 to-emerald-400 dark:from-orange-600 dark:to-orange-400 rounded-lg flex items-center justify-center text-white text-xs font-bold shadow-sm"
+            >
+              {initials || '👤'}
+            </button>
           </div>
         </div>
       </div>

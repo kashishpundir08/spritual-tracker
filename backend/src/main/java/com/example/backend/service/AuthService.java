@@ -1,5 +1,8 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.AuthRequest;
+import com.example.backend.dto.AuthResponse;
+import com.example.backend.dto.RegisterRequest;
 import com.example.backend.model.User;
 import com.example.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,33 +19,29 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
-    public Map<String, String> register(User user) {
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+    public AuthResponse register(RegisterRequest request) {
+
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new RuntimeException("Email already exists!");
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        User user = new User();
+        user.setName(request.getName());
+        user.setEmail(request.getEmail());
 
+        userRepository.save(user);
         String token = jwtService.generateToken(user.getEmail());
-        Map<String, String> response = new HashMap<>();
-        response.put("token", token);
-        response.put("message", "Registration successful!");
-        return response;
+        return new AuthResponse(token, user.getName(), user.getEmail());
     }
 
-    public Map<String, String> login(String email, String password) {
-        User user = userRepository.findByEmail(email)
+    public AuthResponse login(AuthRequest request) {
+        User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found!"));
 
-        if (!passwordEncoder.matches(password, user.getPassword())) {
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid password!");
         }
 
-        String token = jwtService.generateToken(email);
-        Map<String, String> response = new HashMap<>();
-        response.put("token", token);
-        response.put("message", "Login successful!");
-        response.put("name", user.getName());
-        return response;
+        String token = jwtService.generateToken(user.getEmail());
+        return new AuthResponse(token, user.getName(), user.getEmail());
     }
 }

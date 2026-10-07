@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { NavLink } from 'react-router-dom';
-import { X, Flame, LayoutDashboard, Disc, BookOpen, PenLine, MessageCircleQuestion, LogOut } from 'lucide-react';
+import { X, Flame, LayoutDashboard, Disc, BookOpen, PenLine, MessageCircleQuestion, UserRound, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Login from '../pages/Login';
 
@@ -12,6 +12,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     { name: "Reading", icon: <BookOpen size={20} />, path: "/reading" },
     { name: "Journaling", icon: <PenLine size={20} />, path: "/journaling" },
     { name: "Q&A / Guidance", icon: <MessageCircleQuestion size={20} />, path: "/qa" },
+    { name: "Profile", icon: <UserRound size={20} />, path: "/profile" },
   ];
   const navigate = useNavigate();
 

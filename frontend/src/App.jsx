@@ -7,6 +7,7 @@ import Reading from './pages/Reading';
 import Journaling from './pages/Journaling';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Profile from './pages/Profile';
 import { wakeUpServer } from './api/apiClient';
 
 const QA = () => <div className="p-10 text-2xl font-bold">❓ Q&A / Guidance (Coming Soon)</div>;
@@ -65,6 +66,7 @@ function App() {
                 <Route path="/reading" element={<Reading />} />
                 <Route path="/journaling" element={<Journaling />} />
                 <Route path="/qa" element={<QA />} />
+                <Route path="/profile" element={<Profile />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
             </Layout>
