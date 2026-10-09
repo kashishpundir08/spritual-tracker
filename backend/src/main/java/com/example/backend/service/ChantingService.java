@@ -57,17 +57,27 @@ public class ChantingService {
 
     // Get stats
     public Map<String, Object> getStats(Long userId) {
-        List<ChantingSession> sessions = repository.findByUserIdOrderByDateDesc(userId);
 
-        int totalMalas = sessions.stream().mapToInt(ChantingSession::getMalas).sum();
-        int totalTime = sessions.stream().mapToInt(ChantingSession::getTimeSpentSeconds).sum();
-        int streak = sessions.isEmpty() ? 0 : sessions.get(0).getStreak();
+        Integer totalMalas = repository.getTotalMalas(userId);
+        Integer totalTime = repository.getTotalTimeSpent(userId);
+        int totalSession = repository.countByUserId(userId);
+        int streak = repository
+                .findTopByUserIdOrderByDateDesc(userId)
+                .map(ChantingSession::getStreak)
+                .orElse(0);
+        LocalDate weekAgo = LocalDate.now().minusDays(7);
+        List<ChantingSession> weeklySessions  = repository
+                .findSessionsFromDate(userId, weekAgo);
+        int weeklyMalas = weeklySessions.stream()
+                .mapToInt(ChantingSession::getMalas)
+                .sum();
 
         Map<String, Object> stats = new HashMap<>();
-        stats.put("totalMalas", totalMalas);
-        stats.put("totalTimeSeconds", totalTime);
+        stats.put("totalMalas", totalMalas != null ? totalMalas: 0);
+        stats.put("totalTimeSeconds", totalTime != null ? totalTime : 0);
         stats.put("streak", streak);
-        stats.put("totalSessions", sessions.size());
+        stats.put("totalSessions", totalSession);
+        stats.put("weeklyMalas", weeklyMalas);
         return stats;
     }
 
@@ -86,4 +96,6 @@ public class ChantingService {
         }
         return 1;
     }
+
+
 }

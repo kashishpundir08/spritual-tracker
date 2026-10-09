@@ -21,9 +21,11 @@ const Register = () => {
     try {
       const data = await registerApi(formData.name, formData.email, formData.password);
       localStorage.setItem('token', data.token);
+      localStorage.setItem('name', data.name || formData.name);
+      localStorage.setItem('email', data.email || formData.email);
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed!');
+      setError(err.response?.data?.message || err.message || 'Registration failed!');
     } finally {
       setLoading(false);
     }

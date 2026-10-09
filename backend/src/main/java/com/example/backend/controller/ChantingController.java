@@ -1,6 +1,9 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.ApiResponse;
 import com.example.backend.model.ChantingSession;
+import com.example.backend.model.User;
+import com.example.backend.repository.UserRepository;
 import com.example.backend.service.ChantingService;
 import com.example.backend.service.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -17,14 +20,15 @@ public class ChantingController {
 
     private final ChantingService chantingService;
     private final JwtService jwtService;
+    private final UserRepository userRepository;
 
     // Helper to get userId from token
     private Long getUserId(String authHeader) {
         String token = authHeader.replace("Bearer ", "");
         String email = jwtService.extractEmail(token);
-        // For now return email hashCode as userId
-        // Later we'll get actual userId from DB
-        return (long) Math.abs(email.hashCode());
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return user.getId();
     }
 
     @PostMapping("/save")
@@ -38,7 +42,11 @@ public class ChantingController {
         int timeSpentSeconds = (int) request.get("timeSpentSeconds");
 
         ChantingSession session = chantingService.saveSession(userId, mantra, malas, timeSpentSeconds);
-        return ResponseEntity.ok(session);
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        true, "Session created", session
+                )
+        );
     }
 
     @GetMapping("/today")

@@ -16,10 +16,17 @@ const isTokenValid = () => {
   const token = localStorage.getItem('token');
   if (!token) return false;
   try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    const expiry = payload.exp * 1000;
-    return Date.now() < expiry;
-  } catch (e) {
+    const encodedPayload = token.split('.')[1];
+    if (!encodedPayload) return false;
+    const base64Payload = encodedPayload
+      .replace(/-/g, '+')
+      .replace(/_/g, '/');
+    const paddedPayload = base64Payload.padEnd(Math.ceil(base64Payload.length / 4) * 4, '=');
+    const binaryPayload = atob(paddedPayload);
+    const payloadBytes = Uint8Array.from(binaryPayload, (character) => character.charCodeAt(0));
+    const payload = JSON.parse(new TextDecoder().decode(payloadBytes));
+    return Number.isFinite(payload.exp) && Date.now() < payload.exp * 1000;
+  } catch {
     return false;
   }
 };
@@ -29,6 +36,7 @@ const PrivateRoute = ({ children }) => {
   if (!valid) {
     localStorage.removeItem('token');
     localStorage.removeItem('name');
+    localStorage.removeItem('email');
     return <Navigate to="/login" />;
   }
   return children;
